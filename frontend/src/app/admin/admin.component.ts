@@ -1,5 +1,6 @@
 import { Component, signal, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { API_BASE_URL } from '../config';
 
 @Component({
   selector: 'app-admin',
@@ -37,7 +38,7 @@ export class AdminComponent implements OnInit {
 
   async fetchPtoList() {
     try {
-      const response = await fetch('http://localhost:5000/api/doctor-pto');
+      const response = await fetch(`${API_BASE_URL}/api/doctor-pto`);
       const data = await response.json();
       if (response.ok) {
         // Sort by date ascending
@@ -54,7 +55,7 @@ export class AdminComponent implements OnInit {
     this.isLoading.set(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/admin/login', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -124,7 +125,7 @@ export class AdminComponent implements OnInit {
     this.isSubmitting.set(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/doctor-pto', {
+      const response = await fetch(`${API_BASE_URL}/api/doctor-pto`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -163,7 +164,7 @@ export class AdminComponent implements OnInit {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/doctor-pto/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/doctor-pto/${id}`, {
         method: 'DELETE'
       });
 

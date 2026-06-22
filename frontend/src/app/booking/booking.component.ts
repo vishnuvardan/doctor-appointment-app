@@ -1,4 +1,5 @@
 import { Component, signal, computed, OnInit } from '@angular/core';
+import { API_BASE_URL } from '../config';
 
 interface CalendarDay {
   date: Date;
@@ -13,7 +14,7 @@ interface CalendarDay {
   templateUrl: './booking.component.html'
 })
 export class BookingComponent implements OnInit {
-  readonly title = 'Book the doctor';
+  readonly title = 'Book the Doctor';
 
   // State signals
   currentDate = new Date();
@@ -27,7 +28,7 @@ export class BookingComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      const response = await fetch('http://localhost:5000/api/doctor-pto');
+      const response = await fetch(`${API_BASE_URL}/api/doctor-pto`);
       const data = await response.json();
       this.ptoList.set(data);
     } catch (error) {
@@ -142,7 +143,7 @@ export class BookingComponent implements OnInit {
   // Booking actions
   selectDay(day: CalendarDay) {
     if (day.isPast) return; // Can't book in the past
-    
+
     this.selectedDate.set(day.date);
     this.selectedSession.set(null); // Reset session choice
     this.isSuccess.set(false); // Reset success state
@@ -160,7 +161,7 @@ export class BookingComponent implements OnInit {
 
   submitBooking() {
     if (!this.selectedDate() || !this.selectedSession()) return;
-    
+
     // Simulating booking submission
     this.isSuccess.set(true);
   }
