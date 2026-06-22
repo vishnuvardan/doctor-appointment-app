@@ -1,0 +1,215 @@
+<div class="app-container">
+  <!-- Header / Branding -->
+  <header class="app-header">
+    <div class="logo-area">
+      <div class="logo-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+        </svg>
+      </div>
+      <span class="logo-text">PulseBooking</span>
+    </div>
+  </header>
+
+  <!-- Main Booking Area -->
+  <main class="booking-main">
+    <div class="intro-section">
+      <h1 class="main-title">{{ title }}</h1>
+      <p class="main-subtitle">Choose a convenient date below to schedule your medical consultation. All open slots are available for reservation.</p>
+    </div>
+
+    <!-- Calendar Card -->
+    <div class="calendar-card">
+      <div class="calendar-header">
+        <button class="nav-btn" (click)="prevMonth()" aria-label="Previous Month">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
+        </button>
+        <h2 class="current-month-display">
+          {{ monthNames[activeMonth()] }} {{ activeYear() }}
+        </h2>
+        <button class="nav-btn" (click)="nextMonth()" aria-label="Next Month">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="calendar-grid">
+        <!-- Weekdays Header -->
+        @for (dayName of weekdays; track dayName) {
+          <div class="weekday-cell">{{ dayName }}</div>
+        }
+
+        <!-- Month Days Grid -->
+        @for (day of calendarDays(); track day.date.getTime()) {
+          <button 
+            class="day-cell"
+            [class.outside-month]="!day.isCurrentMonth"
+            [class.today]="day.isToday"
+            [class.past]="day.isPast"
+            [class.fully-blocked]="isDayFullyBlocked(day.date)"
+            [class.selected]="selectedDate()?.getTime() === day.date.getTime()"
+            [disabled]="day.isPast || isDayFullyBlocked(day.date)"
+            (click)="selectDay(day)"
+          >
+            <span class="day-number">{{ day.dayNumber }}</span>
+            @if (day.isToday) {
+              <span class="today-dot"></span>
+            }
+          </button>
+        }
+      </div>
+
+      <div class="calendar-legend">
+        <div class="legend-item">
+          <span class="legend-dot today-dot-legend"></span>
+          <span>Today</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-box available-box"></span>
+          <span>Available</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-box past-box"></span>
+          <span>Unavailable / Past</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <p>&copy; 2026 PulseBooking. All rights reserved.</p>
+  </footer>
+
+  <!-- Booking Modal / Popup -->
+  @if (isModalOpen()) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        
+        <!-- Booking Step -->
+        @if (!isSuccess()) {
+          <div class="modal-header">
+            <h3>Schedule Appointment</h3>
+            <button class="close-btn" (click)="closeModal()" aria-label="Close modal">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <p class="selected-date-info">
+              Selected Date: <strong>{{ formatDate(selectedDate()) }}</strong>
+            </p>
+
+            <label class="session-label">Select Available Session</label>
+            
+            <div class="session-options">
+              <!-- Morning Option -->
+              <div 
+                class="session-card"
+                [class.active]="selectedSession() === 'morning'"
+                [class.disabled]="isSlotBlocked(selectedDate(), 'morning')"
+                (click)="selectSession('morning')"
+              >
+                <div class="session-icon morning-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                    <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-12.37c-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06c.39-.38.39-1.02 0-1.41zm-12.37 12.37c-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06c.39-.38.39-1.02 0-1.41z"/>
+                  </svg>
+                </div>
+                <div class="session-details">
+                  <span class="session-name">Morning Session</span>
+                  @if (isSlotBlocked(selectedDate(), 'morning')) {
+                    <span class="session-time unavailable-text">Unavailable</span>
+                  } @else {
+                    <span class="session-time">09:00 AM - 12:00 PM</span>
+                  }
+                </div>
+                <div class="session-radio">
+                  <div class="radio-outer">
+                    <div class="radio-inner" [class.checked]="selectedSession() === 'morning'"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Evening Option -->
+              <div 
+                class="session-card"
+                [class.active]="selectedSession() === 'evening'"
+                [class.disabled]="isSlotBlocked(selectedDate(), 'evening')"
+                (click)="selectSession('evening')"
+              >
+                <div class="session-icon evening-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                    <path d="M12.3 22h-.1c-5.4 0-9.8-4.4-9.8-9.8 0-4.8 3.5-8.9 8.2-9.7.5-.1 1 .2 1.1.7.1.5-.2 1-.7 1.1-3.6.6-6.2 3.8-6.2 7.6 0 4.3 3.5 7.8 7.8 7.8 2.7 0 5.2-1.4 6.6-3.7.3-.4.8-.6 1.3-.4.5.2.7.7.6 1.2-.9 3.1-3.8 5.3-7.8 5.3zm.5-17.8c-.2 0-.4.1-.6.2-.2.2-.3.4-.3.7 0 .5.4.9.9.9.8 0 1.5.3 2.1.8.4.4 1.1.3 1.5-.1.4-.4.3-1.1-.1-1.5-.9-.8-2.2-1.3-3.5-1.3z"/>
+                  </svg>
+                </div>
+                <div class="session-details">
+                  <span class="session-name">Evening Session</span>
+                  @if (isSlotBlocked(selectedDate(), 'evening')) {
+                    <span class="session-time unavailable-text">Unavailable</span>
+                  } @else {
+                    <span class="session-time">04:00 PM - 07:00 PM</span>
+                  }
+                </div>
+                <div class="session-radio">
+                  <div class="radio-outer">
+                    <div class="radio-inner" [class.checked]="selectedSession() === 'evening'"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-outline" (click)="closeModal()">Cancel</button>
+            <button 
+              class="btn btn-primary" 
+              [disabled]="!selectedSession()"
+              (click)="submitBooking()"
+            >
+              Confirm Appointment
+            </button>
+          </div>
+        } 
+        
+        <!-- Success Step -->
+        @else {
+          <div class="success-container">
+            <div class="success-icon-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="48" height="48">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+            </div>
+            
+            <h3>Appointment Scheduled!</h3>
+            <p class="success-message">
+              Your <strong>{{ selectedSession() === 'morning' ? 'Morning' : 'Evening' }} Session</strong> has been reserved for <strong>{{ formatDate(selectedDate()) }}</strong>.
+            </p>
+            
+            <div class="success-details-box">
+              <div class="detail-row">
+                <span class="detail-label">Service</span>
+                <span class="detail-value">Doctor Consultation</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Time Slot</span>
+                <span class="detail-value">{{ selectedSession() === 'morning' ? '09:00 AM - 12:00 PM' : '04:00 PM - 07:00 PM' }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Status</span>
+                <span class="detail-badge">Confirmed</span>
+              </div>
+            </div>
+
+            <button class="btn btn-primary btn-block" (click)="resetBooking()">Done</button>
+          </div>
+        }
+
+      </div>
+    </div>
+  }
+</div>

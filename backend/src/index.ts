@@ -60,6 +60,51 @@ app.get('/api/doctor-pto', async (req, res) => {
   }
 });
 
+app.post('/api/admin/login', (req, res) => {
+  const { username, password } = req.body;
+
+  const adminUser = process.env.ADMIN_USERNAME || 'admin';
+  const adminPass = process.env.ADMIN_PASSWORD || 'admin';
+
+  if (username === adminUser && password === adminPass) {
+    res.json({ success: true, message: 'Logged in successfully' });
+  } else {
+    res.status(401).json({ success: false, error: 'Invalid credentials' });
+  }
+});
+
+app.post('/api/doctor-pto', async (req, res) => {
+  const { doctorName, date, slot, reason } = req.body;
+
+  if (!doctorName || !doctorName.trim()) {
+    return res.status(400).json({ error: 'Doctor name is required.' });
+  }
+  if (!date) {
+    return res.status(400).json({ error: 'Date is required.' });
+  }
+  if (!slot || (slot !== 'morning' && slot !== 'evening')) {
+    return res.status(400).json({ error: 'Slot must be "morning" or "evening".' });
+  }
+
+  try {
+    const newPto = await DoctorPTO.create({
+      doctorName: doctorName.trim(),
+      date: new Date(date),
+      slot,
+      reason: reason || ''
+    });
+    res.status(201).json(newPto);
+  } catch (error: any) {
+    if (error.code === 11000) {
+      res.status(400).json({
+        error: 'This doctor is already marked as unavailable for the selected date and slot.'
+      });
+    } else {
+      res.status(500).json({ error: error.message });
+    }
+  }
+});
+
 const startServer = async () => {
   await connectDB();
   app.listen(PORT, () => {
