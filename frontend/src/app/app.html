@@ -49,8 +49,9 @@
             [class.outside-month]="!day.isCurrentMonth"
             [class.today]="day.isToday"
             [class.past]="day.isPast"
+            [class.fully-blocked]="isDayFullyBlocked(day.date)"
             [class.selected]="selectedDate()?.getTime() === day.date.getTime()"
-            [disabled]="day.isPast"
+            [disabled]="day.isPast || isDayFullyBlocked(day.date)"
             (click)="selectDay(day)"
           >
             <span class="day-number">{{ day.dayNumber }}</span>
@@ -111,6 +112,7 @@
               <div 
                 class="session-card"
                 [class.active]="selectedSession() === 'morning'"
+                [class.disabled]="isSlotBlocked(selectedDate(), 'morning')"
                 (click)="selectSession('morning')"
               >
                 <div class="session-icon morning-icon">
@@ -120,7 +122,11 @@
                 </div>
                 <div class="session-details">
                   <span class="session-name">Morning Session</span>
-                  <span class="session-time">09:00 AM - 12:00 PM</span>
+                  @if (isSlotBlocked(selectedDate(), 'morning')) {
+                    <span class="session-time unavailable-text">Unavailable</span>
+                  } @else {
+                    <span class="session-time">09:00 AM - 12:00 PM</span>
+                  }
                 </div>
                 <div class="session-radio">
                   <div class="radio-outer">
@@ -133,6 +139,7 @@
               <div 
                 class="session-card"
                 [class.active]="selectedSession() === 'evening'"
+                [class.disabled]="isSlotBlocked(selectedDate(), 'evening')"
                 (click)="selectSession('evening')"
               >
                 <div class="session-icon evening-icon">
@@ -142,7 +149,11 @@
                 </div>
                 <div class="session-details">
                   <span class="session-name">Evening Session</span>
-                  <span class="session-time">04:00 PM - 07:00 PM</span>
+                  @if (isSlotBlocked(selectedDate(), 'evening')) {
+                    <span class="session-time unavailable-text">Unavailable</span>
+                  } @else {
+                    <span class="session-time">04:00 PM - 07:00 PM</span>
+                  }
                 </div>
                 <div class="session-radio">
                   <div class="radio-outer">

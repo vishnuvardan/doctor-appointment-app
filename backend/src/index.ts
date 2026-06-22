@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import twilio from 'twilio';
+import { connectDB } from './config/db';
+import { DoctorPTO } from './models/DoctorPTO';
 
 dotenv.config();
 
@@ -49,6 +51,20 @@ app.post('/api/send-sms', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.get('/api/doctor-pto', async (req, res) => {
+  try {
+    const ptos = await DoctorPTO.find({});
+    res.json(ptos);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
 });
+
+const startServer = async () => {
+  await connectDB();
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+};
+
+startServer();

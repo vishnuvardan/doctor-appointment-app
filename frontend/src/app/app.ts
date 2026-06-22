@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, OnInit } from '@angular/core';
 
 interface CalendarDay {
   date: Date;
@@ -14,7 +14,7 @@ interface CalendarDay {
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {
+export class App implements OnInit {
   readonly title = 'Book the doctor';
 
   // State signals
@@ -25,6 +25,34 @@ export class App {
   selectedSession = signal<'morning' | 'evening' | null>(null);
   isModalOpen = signal<boolean>(false);
   isSuccess = signal<boolean>(false);
+  ptoList = signal<any[]>([]);
+
+  async ngOnInit() {
+    try {
+      const response = await fetch('http://localhost:5000/api/doctor-pto');
+      const data = await response.json();
+      this.ptoList.set(data);
+    } catch (error) {
+      console.error('Error fetching Doctor PTO data:', error);
+    }
+  }
+
+  isSlotBlocked(date: Date | null, slot: 'morning' | 'evening'): boolean {
+    if (!date) return false;
+    return this.ptoList().some(pto => {
+      const ptoDate = new Date(pto.date);
+      return (
+        pto.slot === slot &&
+        ptoDate.getUTCFullYear() === date.getFullYear() &&
+        ptoDate.getUTCMonth() === date.getMonth() &&
+        ptoDate.getUTCDate() === date.getDate()
+      );
+    });
+  }
+
+  isDayFullyBlocked(date: Date): boolean {
+    return this.isSlotBlocked(date, 'morning') && this.isSlotBlocked(date, 'evening');
+  }
 
   // Month names for display
   monthNames = [
@@ -128,6 +156,7 @@ export class App {
   }
 
   selectSession(session: 'morning' | 'evening') {
+    if (this.isSlotBlocked(this.selectedDate(), session)) return;
     this.selectedSession.set(session);
   }
 

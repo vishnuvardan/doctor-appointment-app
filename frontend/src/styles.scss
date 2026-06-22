@@ -469,6 +469,23 @@ body {
   &.active .session-radio .radio-outer {
     border-color: $primary-color;
   }
+
+  &.disabled {
+    opacity: 0.45;
+    pointer-events: none;
+    background-color: #f8fafc;
+    border-color: #f1f5f9;
+    
+    .session-radio .radio-outer {
+      border-color: #e2e8f0;
+      background-color: #fafbfc;
+    }
+  }
+}
+
+.unavailable-text {
+  color: #ef4444 !important;
+  font-weight: 600;
 }
 
 // Modal Footer
