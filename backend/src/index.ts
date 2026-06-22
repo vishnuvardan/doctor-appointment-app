@@ -105,6 +105,20 @@ app.post('/api/doctor-pto', async (req, res) => {
   }
 });
 
+app.delete('/api/doctor-pto/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedPto = await DoctorPTO.findByIdAndDelete(id);
+    if (!deletedPto) {
+      return res.status(404).json({ error: 'Doctor PTO record not found.' });
+    }
+    res.json({ success: true, message: 'Doctor PTO removed successfully.' });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 const startServer = async () => {
   await connectDB();
   app.listen(PORT, () => {

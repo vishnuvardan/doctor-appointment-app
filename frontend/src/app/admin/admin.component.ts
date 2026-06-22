@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
   imports: [FormsModule],
   templateUrl: './admin.component.html'
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit {
   // Login state signals
   isLoggedIn = signal<boolean>(false);
   username = signal<string>('');
@@ -23,6 +23,31 @@ export class AdminComponent {
   formError = signal<string>('');
   formSuccess = signal<string>('');
   isSubmitting = signal<boolean>(false);
+
+  // PTO list signal
+  ptoList = signal<any[]>([]);
+
+  async ngOnInit() {
+    // If credentials are saved or session persists (optional), we load it.
+    // For now we just load if isLoggedIn is true
+    if (this.isLoggedIn()) {
+      await this.fetchPtoList();
+    }
+  }
+
+  async fetchPtoList() {
+    try {
+      const response = await fetch('http://localhost:5000/api/doctor-pto');
+      const data = await response.json();
+      if (response.ok) {
+        // Sort by date ascending
+        data.sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        this.ptoList.set(data);
+      }
+    } catch (error) {
+      console.error('Error fetching PTO list:', error);
+    }
+  }
 
   async login() {
     this.errorMessage.set('');
@@ -44,6 +69,7 @@ export class AdminComponent {
 
       if (response.ok && data.success) {
         this.isLoggedIn.set(true);
+        await this.fetchPtoList();
       } else {
         this.errorMessage.set(data.error || 'Authentication failed. Please check credentials.');
       }
@@ -60,6 +86,7 @@ export class AdminComponent {
     this.username.set('');
     this.password.set('');
     this.errorMessage.set('');
+    this.ptoList.set([]);
   }
 
   openPtoModal() {
@@ -114,6 +141,7 @@ export class AdminComponent {
 
       if (response.ok) {
         this.formSuccess.set('Doctor unavailability added successfully!');
+        await this.fetchPtoList();
         // Automatically close modal after 1.5 seconds
         setTimeout(() => {
           this.closePtoModal();
@@ -127,5 +155,36 @@ export class AdminComponent {
     } finally {
       this.isSubmitting.set(false);
     }
+  }
+
+  async deletePto(id: string) {
+    if (!confirm('Are you sure you want to cancel this PTO record?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/doctor-pto/${id}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        this.ptoList.update(list => list.filter(item => item._id !== id));
+      } else {
+        alert('Failed to delete PTO record.');
+      }
+    } catch (error) {
+      console.error('Error deleting PTO:', error);
+      alert('Could not connect to database server.');
+    }
+  }
+
+  formatDateStr(dateStr: string): string {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      timeZone: 'UTC' // Keep the UTC timezone to align with MongoDB inputs
+    });
   }
 }

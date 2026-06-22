@@ -374,6 +374,45 @@ body {
     letter-spacing: 0.05em;
     margin-bottom: 0.75rem;
   }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+
+    label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: $text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    input[type="text"],
+    input[type="date"] {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.95rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      background-color: white;
+      color: $text-main;
+      outline: none;
+      transition: all 0.2s ease;
+
+      &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 4px rgba($primary-color, 0.1);
+      }
+
+      &:disabled {
+        background-color: #fafbfc;
+        color: $text-disabled;
+        cursor: not-allowed;
+      }
+    }
+  }
 }
 
 // Session Option Cards
@@ -958,4 +997,153 @@ body {
 .modal-form {
   display: flex;
   flex-direction: column;
+}
+
+// PTO Listing Styles
+.pto-list-card {
+  background-color: $bg-card;
+  border-radius: 20px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: $shadow-md;
+  padding: 2rem;
+  margin-top: 2rem;
+
+  .pto-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: $text-main;
+      margin: 0;
+    }
+
+    .pto-count-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: $primary-color;
+      background-color: $primary-light;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+}
+
+.empty-pto-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .empty-icon-wrapper {
+    background-color: #ecfdf5;
+    color: #059669;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.1);
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: $text-muted;
+    max-width: 320px;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+.pto-table-wrapper {
+  overflow-x: auto;
+  margin: 0 -2rem;
+  padding: 0 2rem;
+}
+
+.pto-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+
+  th {
+    font-weight: 600;
+    color: $text-muted;
+    border-bottom: 2px solid $border-color;
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  td {
+    padding: 1rem;
+    border-bottom: 1px solid $border-color;
+    color: $text-main;
+    vertical-align: middle;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  .font-semibold {
+    font-weight: 600;
+  }
+
+  .text-right {
+    text-align: right;
+  }
+
+  .text-muted {
+    color: $text-muted;
+  }
+
+  .slot-pill {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+
+    &.slot-morning {
+      background-color: $morning-light;
+      color: $morning-color;
+    }
+
+    &.slot-evening {
+      background-color: $evening-light;
+      color: $evening-color;
+    }
+  }
+
+  .btn-delete {
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #fef2f2;
+      transform: scale(1.1);
+    }
+  }
 }
