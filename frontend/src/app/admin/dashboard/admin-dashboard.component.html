@@ -140,6 +140,7 @@
                 <th>Patient Name</th>
                 <th>Mobile Number</th>
                 <th>Session Slot</th>
+                <th class="text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -152,6 +153,22 @@
                     [class.slot-evening]="appt.slot === 'evening'">
                     {{ appt.slot === 'morning' ? 'Morning' : 'Evening' }}
                   </span>
+                </td>
+                <td class="text-right">
+                  <div class="actions-cell">
+                    <a [href]="'tel:' + appt.mobileNumber" class="btn btn-sm btn-outline btn-call" aria-label="Call Patient">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                        <path d="M6.62 10.79a15.15 15.15 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.27 11.4 11.4 0 003.85.61 1 1 0 011 1V20a1 1 0 01-1 1A16 16 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.4 11.4 0 00.61 3.85 1 1 0 01-.27 1.02l-2.22 2.2z"/>
+                      </svg>
+                      <span>Call</span>
+                    </a>
+                    <a [href]="getSMSLink(appt)" class="btn btn-sm btn-primary btn-sms" aria-label="Remind via SMS">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                        <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
+                      </svg>
+                      <span>Remind</span>
+                    </a>
+                  </div>
                 </td>
               </tr>
               }

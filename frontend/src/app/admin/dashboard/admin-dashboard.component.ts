@@ -183,4 +183,11 @@ export class AdminDashboardComponent implements OnInit {
     this.selectedAppointmentDate.set(nextDateStr);
     await this.fetchAppointments();
   }
+
+  getSMSLink(appt: AppointmentRecord): string {
+    const formattedDate = this.formatDateStr(appt.date);
+    const sessionTime = appt.slot === 'morning' ? '09:00 AM - 12:00 PM' : '04:00 PM - 07:00 PM';
+    const message = `Gentle reminder to visit Pradeep Siddha clinic on ${formattedDate} during the ${appt.slot === 'morning' ? 'Morning' : 'Evening'} slot (${sessionTime}).`;
+    return `sms:${appt.mobileNumber}?body=${encodeURIComponent(message)}`;
+  }
 }
