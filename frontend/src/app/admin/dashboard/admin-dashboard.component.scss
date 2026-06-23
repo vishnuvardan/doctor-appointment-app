@@ -681,3 +681,112 @@
     background-color: $primary-hover !important;
   }
 }
+
+// Responsive mobile table card layout & card optimizations
+@media (max-width: 768px) {
+  .pto-list-card {
+    padding: 1.25rem !important;
+    margin-top: 1.5rem !important;
+  }
+
+  .pto-table-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: visible !important;
+  }
+
+  .pto-table {
+    display: block !important;
+    width: 100% !important;
+
+    thead {
+      display: none !important; /* Hide standard headers */
+    }
+
+    tbody, tr, td {
+      display: block !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    tr {
+      border: 1px solid $border-color !important;
+      border-radius: 12px !important;
+      padding: 0.75rem 1rem !important;
+      margin-bottom: 1rem !important;
+      background-color: #fafbfc !important;
+      box-shadow: $shadow-sm !important;
+
+      &:last-child {
+        margin-bottom: 0 !important;
+      }
+    }
+
+    td {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      padding: 0.6rem 0 !important;
+      border-bottom: 1px dashed rgba(226, 232, 240, 0.7) !important;
+      text-align: right !important;
+
+      &:last-child {
+        border-bottom: none !important;
+        padding-bottom: 0.25rem !important;
+      }
+
+      &::before {
+        content: attr(data-label) !important;
+        font-weight: 600 !important;
+        color: $text-muted !important;
+        text-transform: uppercase !important;
+        font-size: 0.7rem !important;
+        letter-spacing: 0.05em !important;
+        text-align: left !important;
+        margin-right: 1rem !important;
+      }
+
+      &.text-right {
+        text-align: right !important;
+        justify-content: space-between !important;
+      }
+    }
+  }
+
+  .actions-cell {
+    justify-content: flex-end !important;
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .welcome-card-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+
+    .btn-add-pto {
+      width: 100% !important;
+      justify-content: center !important;
+    }
+  }
+
+  .date-navigator {
+    width: 100% !important;
+    justify-content: space-between !important;
+    margin-top: 0.5rem !important;
+    border-top: 1px dashed $border-color !important;
+    padding-top: 0.75rem !important;
+
+    .date-navigator-controls {
+      flex-grow: 1 !important;
+      justify-content: flex-end !important;
+    }
+
+    .date-input {
+      flex-grow: 1 !important;
+      max-width: 160px !important;
+    }
+  }
+}
+

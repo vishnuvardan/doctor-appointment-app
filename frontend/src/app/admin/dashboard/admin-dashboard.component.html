@@ -59,16 +59,16 @@
             <tbody>
               @for (pto of ptoList(); track pto._id) {
               <tr>
-                <td class="font-semibold">{{ pto.doctorName }}</td>
-                <td>{{ formatDateStr(pto.date) }}</td>
-                <td>
+                <td data-label="Doctor Name" class="font-semibold">{{ pto.doctorName }}</td>
+                <td data-label="Date">{{ formatDateStr(pto.date) }}</td>
+                <td data-label="Session Slot">
                   <span class="slot-pill" [class.slot-morning]="pto.slot === 'morning'"
                     [class.slot-evening]="pto.slot === 'evening'">
                     {{ pto.slot === 'morning' ? 'Morning' : 'Evening' }}
                   </span>
                 </td>
-                <td class="text-muted">{{ pto.reason || '-' }}</td>
-                <td class="text-right">
+                <td data-label="Reason" class="text-muted">{{ pto.reason || '-' }}</td>
+                <td data-label="Actions" class="text-right">
                   <button class="btn-delete" (click)="deletePto(pto._id)" aria-label="Cancel PTO">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20"
                       height="20">
@@ -146,15 +146,15 @@
             <tbody>
               @for (appt of appointmentsList(); track appt._id) {
               <tr>
-                <td class="font-semibold">{{ appt.patientName }}</td>
-                <td>{{ appt.mobileNumber }}</td>
-                <td>
+                <td data-label="Patient Name" class="font-semibold">{{ appt.patientName }}</td>
+                <td data-label="Mobile Number">{{ appt.mobileNumber }}</td>
+                <td data-label="Session Slot">
                   <span class="slot-pill" [class.slot-morning]="appt.slot === 'morning'"
                     [class.slot-evening]="appt.slot === 'evening'">
                     {{ appt.slot === 'morning' ? 'Morning' : 'Evening' }}
                   </span>
                 </td>
-                <td class="text-right">
+                <td data-label="Actions" class="text-right">
                   <div class="actions-cell">
                     <a [href]="'tel:' + appt.mobileNumber" class="btn btn-sm btn-outline btn-call" aria-label="Call Patient">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
