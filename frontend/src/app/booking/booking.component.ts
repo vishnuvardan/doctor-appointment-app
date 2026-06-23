@@ -1,5 +1,5 @@
-import { Component, signal, computed, OnInit } from '@angular/core';
-import { API_BASE_URL } from '../config';
+import { Component, signal, computed, OnInit, inject } from '@angular/core';
+import { PtoService } from '../services/pto.service';
 
 interface CalendarDay {
   date: Date;
@@ -16,6 +16,8 @@ interface CalendarDay {
 export class BookingComponent implements OnInit {
   readonly title = 'Book the Doctor';
 
+  private ptoService = inject(PtoService);
+
   // State signals
   currentDate = new Date();
   activeYear = signal<number>(this.currentDate.getFullYear());
@@ -24,21 +26,14 @@ export class BookingComponent implements OnInit {
   selectedSession = signal<'morning' | 'evening' | null>(null);
   isModalOpen = signal<boolean>(false);
   isSuccess = signal<boolean>(false);
-  ptoList = signal<any[]>([]);
 
   async ngOnInit() {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/doctor-pto`);
-      const data = await response.json();
-      this.ptoList.set(data);
-    } catch (error) {
-      console.error('Error fetching Doctor PTO data:', error);
-    }
+    await this.ptoService.fetchPtoList();
   }
 
   isSlotBlocked(date: Date | null, slot: 'morning' | 'evening'): boolean {
     if (!date) return false;
-    return this.ptoList().some(pto => {
+    return this.ptoService.ptoList().some(pto => {
       const ptoDate = new Date(pto.date);
       return (
         pto.slot === slot &&

@@ -1,7 +1,7 @@
 // Custom Design Tokens
-$primary-color: #4f46e5;
-$primary-hover: #4338ca;
-$primary-light: #e0e7ff;
+$primary-color: #059669;
+$primary-hover: #047857;
+$primary-light: #d1fae5;
 $morning-color: #f59e0b;
 $morning-light: #fef3c7;
 $evening-color: #3b82f6;
@@ -53,7 +53,7 @@ body {
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
     }
 
     .logo-text {
@@ -209,7 +209,7 @@ body {
     &.selected {
       background-color: $primary-color !important;
       color: white !important;
-      box-shadow: 0 8px 16px rgba(79, 70, 229, 0.3);
+      box-shadow: 0 8px 16px rgba(5, 150, 105, 0.3);
       transform: scale(1.05) translateY(-2px);
 
       &.today {
@@ -570,12 +570,12 @@ body {
   &.btn-primary {
     background-color: $primary-color;
     color: white;
-    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+    box-shadow: 0 4px 10px rgba(5, 150, 105, 0.2);
 
     &:hover:not(:disabled) {
       background-color: $primary-hover;
       transform: translateY(-1px);
-      box-shadow: 0 6px 12px rgba(79, 70, 229, 0.25);
+      box-shadow: 0 6px 12px rgba(5, 150, 105, 0.25);
     }
 
     &:active:not(:disabled) {
@@ -763,7 +763,7 @@ body {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
       margin-bottom: 1rem;
     }
 
