@@ -149,7 +149,7 @@ app.delete('/api/doctor-pto/:id', async (req, res) => {
 
 const startServer = async () => {
   await connectDB();
-  app.listen(PORT, () => {
+  app.listen(Number(PORT), '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
   });
 };
