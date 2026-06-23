@@ -1,12 +1,13 @@
 import { Component, signal, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-admin-login',
   imports: [FormsModule],
-  templateUrl: './admin-login.component.html'
+  templateUrl: './admin-login.component.html',
+  styleUrl: './admin-login.component.scss'
 })
 export class AdminLoginComponent {
   private authService = inject(AuthService);

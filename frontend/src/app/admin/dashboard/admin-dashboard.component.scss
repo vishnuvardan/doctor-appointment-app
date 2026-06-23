@@ -1,0 +1,637 @@
+@use '../../../variables' as *;
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  background-color: $bg-card;
+  border-bottom: 1px solid $border-color;
+  padding: 1.25rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: $shadow-sm;
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .logo-icon {
+      background-color: $primary-color;
+      color: white;
+      padding: 0.5rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-text {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: $text-main;
+      letter-spacing: -0.02em;
+    }
+  }
+}
+
+.dashboard-content {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  box-sizing: border-box;
+
+  .welcome-card {
+    background-color: $bg-card;
+    border-radius: 20px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: $shadow-md;
+    padding: 2.5rem 2rem;
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: $text-main;
+      margin: 0 0 1rem 0;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: $text-muted;
+      margin: 0;
+    }
+  }
+}
+
+.dashboard-grid {
+  margin-top: 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+
+  @media (min-width: 992px) {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+
+    .pto-list-card {
+      margin-top: 0;
+    }
+  }
+}
+
+.welcome-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+
+  h1 {
+    margin: 0 !important;
+  }
+}
+
+.btn-add-pto {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+}
+
+.radio-group {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 0.25rem 0;
+
+  .radio-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: $text-main;
+    cursor: pointer;
+
+    input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: $primary-color;
+      cursor: pointer;
+    }
+  }
+}
+
+.form-success-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 10px;
+  color: #059669;
+  font-size: 0.85rem;
+  line-height: 1.4;
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+}
+
+// PTO Listing Styles
+.pto-list-card {
+  background-color: $bg-card;
+  border-radius: 20px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: $shadow-md;
+  padding: 2rem;
+  margin-top: 2rem;
+
+  .pto-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: $text-main;
+      margin: 0;
+    }
+
+    .pto-count-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: $primary-color;
+      background-color: $primary-light;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+
+      &.badge-red {
+        color: #ef4444;
+        background-color: #fef2f2;
+      }
+
+      &.badge-green {
+        background-color: #ecfdf5;
+        color: #047857;
+      }
+    }
+  }
+}
+
+.empty-pto-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .empty-icon-wrapper {
+    background-color: #ecfdf5;
+    color: #059669;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.1);
+
+    &.gray-theme {
+      background-color: #f1f5f9;
+      color: #94a3b8;
+      box-shadow: none;
+    }
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: $text-muted;
+    max-width: 320px;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+.pto-table-wrapper {
+  overflow-x: auto;
+  margin: 0 -2rem;
+  padding: 0 2rem;
+}
+
+.pto-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+
+  th {
+    font-weight: 600;
+    color: $text-muted;
+    border-bottom: 2px solid $border-color;
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  td {
+    padding: 1rem;
+    border-bottom: 1px solid $border-color;
+    color: $text-main;
+    vertical-align: middle;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  .font-semibold {
+    font-weight: 600;
+  }
+
+  .text-right {
+    text-align: right;
+  }
+
+  .text-muted {
+    color: $text-muted;
+  }
+
+  .slot-pill {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+
+    &.slot-morning {
+      background-color: $morning-light;
+      color: $morning-color;
+    }
+
+    &.slot-evening {
+      background-color: $evening-light;
+      color: $evening-color;
+    }
+  }
+
+  .btn-delete {
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #fef2f2;
+      transform: scale(1.1);
+    }
+  }
+}
+
+// Modal Styling (Dashboard Modal copy)
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  z-index: 1000;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.modal-card {
+  background-color: $bg-card;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: $shadow-lg;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid $border-color;
+
+  h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: $text-main;
+    margin: 0;
+  }
+
+  .close-btn {
+    background: transparent;
+    border: none;
+    color: $text-muted;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: $bg-app;
+      color: $text-main;
+    }
+  }
+}
+
+.modal-body {
+  padding: 1.5rem;
+
+  .session-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+
+    label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: $text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    input[type="text"],
+    input[type="date"] {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.95rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      background-color: white;
+      color: $text-main;
+      outline: none;
+      transition: all 0.2s ease;
+
+      &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 4px rgba($primary-color, 0.1);
+      }
+
+      &:disabled {
+        background-color: #fafbfc;
+        color: $text-disabled;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+.session-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.session-card {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-radius: 14px;
+  border: 2px solid $border-color;
+  cursor: pointer;
+  background-color: $bg-card;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+  }
+
+  &.active {
+    border-color: $primary-color;
+    background-color: rgba($primary-light, 0.25);
+  }
+
+  .session-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem;
+    border-radius: 10px;
+    margin-right: 1rem;
+    color: $text-main;
+
+    &.morning-icon {
+      background-color: $morning-light;
+      color: $morning-color;
+    }
+
+    &.evening-icon {
+      background-color: $evening-light;
+      color: $evening-color;
+    }
+  }
+
+  .session-details {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    .session-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: $text-main;
+      margin-bottom: 0.15rem;
+    }
+
+    .session-time {
+      font-size: 0.8rem;
+      color: $text-muted;
+    }
+  }
+
+  .session-radio {
+    .radio-outer {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+
+      .radio-inner {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: transparent;
+        transition: all 0.2s ease;
+
+        &.checked {
+          background-color: $primary-color;
+        }
+      }
+    }
+  }
+
+  &.active .session-radio .radio-outer {
+    border-color: $primary-color;
+  }
+
+  &.disabled {
+    opacity: 0.45;
+    pointer-events: none;
+    background-color: #f8fafc;
+    border-color: #f1f5f9;
+
+    .session-radio .radio-outer {
+      border-color: #e2e8f0;
+      background-color: #fafbfc;
+    }
+  }
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid $border-color;
+  background-color: #fafbfc;
+}
+
+// Converted Classes for Appointment Component Headers & Inline Styles
+.appointments-title-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.date-navigator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748b;
+  }
+}
+
+.date-navigator-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.btn-nav-day {
+  padding: 0.4rem 0.6rem;
+  min-width: auto;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  box-sizing: border-box;
+}
+
+.date-input {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  background-color: white;
+  height: 38px;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+  }
+}
+
+.loading-appointments {
+  padding: 3rem;
+  text-align: center;
+  color: #64748b;
+}
+
+@media (max-width: 480px) {
+  .dashboard-header {
+    padding: 1rem;
+  }
+
+  .dashboard-content {
+    padding: 1.5rem 1rem;
+
+    .welcome-card {
+      padding: 1.5rem;
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}

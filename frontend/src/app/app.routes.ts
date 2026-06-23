@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { BookingComponent } from './booking/booking.component';
-import { AdminLayoutComponent } from './admin/admin-layout.component';
-import { AdminLoginComponent } from './admin/admin-login.component';
-import { AdminDashboardComponent } from './admin/admin-dashboard.component';
+import { AdminLayoutComponent } from './admin/layout/admin-layout.component';
+import { AdminLoginComponent } from './admin/login/admin-login.component';
+import { AdminDashboardComponent } from './admin/dashboard/admin-dashboard.component';
 import { authGuard } from './guards/auth.guard';
 import { loginGuard } from './guards/login.guard';
 

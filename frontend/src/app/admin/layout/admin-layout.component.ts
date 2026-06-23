@@ -8,6 +8,7 @@ import { RouterOutlet } from '@angular/router';
     <div class="admin-wrapper">
       <router-outlet></router-outlet>
     </div>
-  `
+  `,
+  styleUrl: './admin-layout.component.scss'
 })
 export class AdminLayoutComponent {}

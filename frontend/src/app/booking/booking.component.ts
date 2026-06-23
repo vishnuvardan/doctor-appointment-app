@@ -1,5 +1,8 @@
 import { Component, signal, computed, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { PtoService } from '../services/pto.service';
+import { AppointmentService } from '../services/appointment.service';
+import { CLINIC_WEEKLY_HOLIDAYS } from '../config';
 
 interface CalendarDay {
   date: Date;
@@ -11,12 +14,15 @@ interface CalendarDay {
 
 @Component({
   selector: 'app-booking',
-  templateUrl: './booking.component.html'
+  imports: [FormsModule],
+  templateUrl: './booking.component.html',
+  styleUrl: './booking.component.scss'
 })
 export class BookingComponent implements OnInit {
   readonly title = 'Book the Doctor';
 
   private ptoService = inject(PtoService);
+  private appointmentService = inject(AppointmentService);
 
   // State signals
   currentDate = new Date();
@@ -27,12 +33,25 @@ export class BookingComponent implements OnInit {
   isModalOpen = signal<boolean>(false);
   isSuccess = signal<boolean>(false);
 
+  // Patient booking form signals
+  patientName = signal<string>('');
+  mobileNumber = signal<string>('');
+  isSubmitting = signal<boolean>(false);
+  errorMessage = signal<string>('');
+
   async ngOnInit() {
     await this.ptoService.fetchPtoList();
   }
 
+  isHoliday(date: Date): boolean {
+    const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const dayName = dayNames[date.getDay()];
+    return CLINIC_WEEKLY_HOLIDAYS.includes(dayName);
+  }
+
   isSlotBlocked(date: Date | null, slot: 'morning' | 'evening'): boolean {
     if (!date) return false;
+    if (this.isHoliday(date)) return true;
     return this.ptoService.ptoList().some(pto => {
       const ptoDate = new Date(pto.date);
       return (
@@ -45,6 +64,7 @@ export class BookingComponent implements OnInit {
   }
 
   isDayFullyBlocked(date: Date): boolean {
+    if (this.isHoliday(date)) return true;
     return this.isSlotBlocked(date, 'morning') && this.isSlotBlocked(date, 'evening');
   }
 
@@ -154,11 +174,31 @@ export class BookingComponent implements OnInit {
     this.selectedSession.set(session);
   }
 
-  submitBooking() {
-    if (!this.selectedDate() || !this.selectedSession()) return;
+  async submitBooking() {
+    if (!this.selectedDate() || !this.selectedSession() || !this.patientName().trim() || !this.mobileNumber().trim()) return;
 
-    // Simulating booking submission
-    this.isSuccess.set(true);
+    this.isSubmitting.set(true);
+    this.errorMessage.set('');
+
+    const year = this.selectedDate()!.getFullYear();
+    const month = String(this.selectedDate()!.getMonth() + 1).padStart(2, '0');
+    const day = String(this.selectedDate()!.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+
+    const result = await this.appointmentService.createAppointment({
+      patientName: this.patientName().trim(),
+      mobileNumber: this.mobileNumber().trim(),
+      date: formattedDate,
+      slot: this.selectedSession()!
+    });
+
+    this.isSubmitting.set(false);
+
+    if (result.success) {
+      this.isSuccess.set(true);
+    } else {
+      this.errorMessage.set(result.error || 'Failed to schedule appointment.');
+    }
   }
 
   resetBooking() {
@@ -166,6 +206,9 @@ export class BookingComponent implements OnInit {
     this.isSuccess.set(false);
     this.selectedDate.set(null);
     this.selectedSession.set(null);
+    this.patientName.set('');
+    this.mobileNumber.set('');
+    this.errorMessage.set('');
   }
 
   // Helper
