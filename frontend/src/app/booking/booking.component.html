@@ -49,12 +49,23 @@
             [class.outside-month]="!day.isCurrentMonth"
             [class.today]="day.isToday"
             [class.past]="day.isPast"
-            [class.fully-blocked]="isDayFullyBlocked(day.date)"
+            [class.fully-blocked]="!day.isPast && !isHoliday(day.date) && isDayFullyBlocked(day.date)"
+            [class.partially-blocked-morning]="!day.isPast && !isHoliday(day.date) && isSlotBlocked(day.date, 'morning') && !isDayFullyBlocked(day.date)"
+            [class.partially-blocked-evening]="!day.isPast && !isHoliday(day.date) && isSlotBlocked(day.date, 'evening') && !isDayFullyBlocked(day.date)"
             [class.selected]="selectedDate()?.getTime() === day.date.getTime()"
             [disabled]="day.isPast || isDayFullyBlocked(day.date)"
             (click)="selectDay(day)"
           >
-            <span class="day-number">{{ day.dayNumber }}</span>
+            <div class="day-content-wrapper">
+              <span class="day-number">{{ day.dayNumber }}</span>
+              @if (!day.isPast && !isHoliday(day.date)) {
+                @if (isDayFullyBlocked(day.date)) {
+                  <span class="leave-label" title="Doctor Unavailable">L</span>
+                } @else if (isSlotBlocked(day.date, 'morning') || isSlotBlocked(day.date, 'evening')) {
+                  <span class="leave-label" title="Partial Leave">L</span>
+                }
+              }
+            </div>
             @if (day.isToday) {
               <span class="today-dot"></span>
             }
@@ -70,6 +81,10 @@
         <div class="legend-item">
           <span class="legend-box available-box"></span>
           <span>Available</span>
+        </div>
+        <div class="legend-item">
+          <span class="leave-label-legend">L</span>
+          <span>Doctor Leave</span>
         </div>
         <div class="legend-item">
           <span class="legend-box past-box"></span>

@@ -162,6 +162,19 @@
       cursor: not-allowed;
       background-color: #fafbfc;
       opacity: 0.6;
+
+      &.fully-blocked {
+        background-color: #fee2e2 !important;
+        color: #b91c1c !important;
+        border-color: #fca5a5 !important;
+        opacity: 0.95 !important;
+        
+        .leave-label {
+          background-color: #ef4444;
+          color: white;
+          border-color: #ef4444;
+        }
+      }
     }
 
     &.outside-month:not(:disabled) {
@@ -189,6 +202,14 @@
       .today-dot {
         background-color: white;
       }
+
+      &.partially-blocked-morning {
+        background: linear-gradient(90deg, #fee2e2 50%, $primary-color 50%) !important;
+      }
+
+      &.partially-blocked-evening {
+        background: linear-gradient(90deg, $primary-color 50%, #fee2e2 50%) !important;
+      }
     }
 
     .today-dot {
@@ -198,6 +219,56 @@
       border-radius: 50%;
       position: absolute;
       bottom: 6px;
+    }
+
+    // Partial and Full Leaves Background Indicators
+    &.fully-blocked {
+      background-color: #fee2e2 !important;
+      color: #b91c1c !important;
+      border: 1px solid #fca5a5 !important;
+    }
+
+    &.partially-blocked-morning {
+      background: linear-gradient(90deg, #fee2e2 50%, transparent 50%) !important;
+      border: 1px solid rgba(252, 165, 165, 0.4) !important;
+
+      &:hover:not(:disabled) {
+        background: linear-gradient(90deg, #fee2e2 50%, $bg-app 50%) !important;
+      }
+    }
+
+    &.partially-blocked-evening {
+      background: linear-gradient(90deg, transparent 50%, #fee2e2 50%) !important;
+      border: 1px solid rgba(252, 165, 165, 0.4) !important;
+
+      &:hover:not(:disabled) {
+        background: linear-gradient(90deg, $bg-app 50%, #fee2e2 50%) !important;
+      }
+    }
+
+    // Dynamic Leave Label Text Layout
+    .day-content-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .leave-label {
+      font-size: 0.55rem;
+      font-weight: 800;
+      color: #b91c1c;
+      background-color: #fee2e2;
+      border: 1px solid #fca5a5;
+      padding: 0px 3px;
+      border-radius: 4px;
+      line-height: 1.2;
+      display: inline-block;
+      transform: scale(0.9);
+      vertical-align: middle;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
     }
   }
 }
@@ -243,6 +314,24 @@
       background-color: #fafbfc;
       border: 1px solid #f1f5f9;
       opacity: 0.6;
+    }
+
+    .leave-label-legend {
+      font-size: 0.55rem;
+      font-weight: 800;
+      color: #b91c1c;
+      background-color: #fee2e2;
+      border: 1px solid #fca5a5;
+      padding: 1px 4px;
+      border-radius: 4px;
+      line-height: 1.2;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+      width: 14px;
+      height: 14px;
+      box-sizing: border-box;
     }
   }
 }

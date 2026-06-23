@@ -19,7 +19,7 @@ interface CalendarDay {
   styleUrl: './booking.component.scss'
 })
 export class BookingComponent implements OnInit {
-  readonly title = 'Book the Doctor';
+  readonly title = 'Book Pradeep Siddha Clinic';
 
   private ptoService = inject(PtoService);
   private appointmentService = inject(AppointmentService);
