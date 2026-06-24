@@ -211,6 +211,13 @@ export class BookingComponent implements OnInit {
     this.errorMessage.set('');
   }
 
+  getReminderSMSLink(): string {
+    const dateStr = this.formatDate(this.selectedDate());
+    const timeStr = this.selectedSession() === 'morning' ? '10:30 AM - 01:00 PM' : '06:30 PM - 08:30 PM';
+    const message = `Hi Dr. Shunmugam, I have booked an appointment for ${this.patientName().trim()} on ${dateStr} from ${timeStr}.`;
+    return `sms:9865463936?body=${encodeURIComponent(message)}`;
+  }
+
   // Helper
   formatDate(date: Date | null): string {
     if (!date) return '';
