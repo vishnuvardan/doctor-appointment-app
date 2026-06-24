@@ -77,4 +77,17 @@ export class AppointmentController {
       }
     }
   }
+
+  static async deleteAppointment(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const deleted = await Appointment.findByIdAndDelete(id);
+      if (!deleted) {
+        return res.status(404).json({ error: 'Appointment not found.' });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

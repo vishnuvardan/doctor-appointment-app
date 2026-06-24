@@ -53,4 +53,21 @@ export class AppointmentService {
       return { success: false, error: 'Could not connect to database server.' };
     }
   }
+
+  async deleteAppointment(id: string): Promise<{ success: boolean; error?: string }> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/appointments/${id}`, {
+        method: 'DELETE'
+      });
+      const data = await response.json();
+      if (response.ok) {
+        return { success: true };
+      } else {
+        return { success: false, error: data.error || 'Failed to delete appointment.' };
+      }
+    } catch (error) {
+      console.error('Delete appointment error:', error);
+      return { success: false, error: 'Could not connect to database server.' };
+    }
+  }
 }

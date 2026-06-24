@@ -54,6 +54,8 @@
     border: 1px solid rgba(226, 232, 240, 0.8);
     box-shadow: $shadow-md;
     padding: 2.5rem 2rem;
+    box-sizing: border-box;
+    width: 100%;
 
     h1 {
       font-family: 'Outfit', sans-serif;
@@ -78,6 +80,8 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
+  width: 100%;
+  box-sizing: border-box;
 
   @media (min-width: 992px) {
     grid-template-columns: 1fr 1fr;
@@ -163,6 +167,8 @@
   box-shadow: $shadow-md;
   padding: 2rem;
   margin-top: 2rem;
+  width: 100%;
+  box-sizing: border-box;
 
   .pto-list-header {
     display: flex;
@@ -255,14 +261,14 @@
     font-weight: 600;
     color: $text-muted;
     border-bottom: 2px solid $border-color;
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 0.5rem;
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
   td {
-    padding: 1rem;
+    padding: 0.85rem 0.5rem;
     border-bottom: 1px solid $border-color;
     color: $text-main;
     vertical-align: middle;
@@ -679,6 +685,26 @@
 
   &:hover {
     background-color: $primary-hover !important;
+  }
+}
+
+.btn-delete-appointment {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: #fef2f2;
+    transform: scale(1.1);
   }
 }
 

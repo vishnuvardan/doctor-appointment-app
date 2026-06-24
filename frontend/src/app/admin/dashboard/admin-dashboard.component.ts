@@ -153,6 +153,20 @@ export class AdminDashboardComponent implements OnInit {
     }
   }
 
+  async deleteAppointment(id: string | undefined) {
+    if (!id) return;
+    if (!confirm('Are you sure you want to delete this appointment?')) {
+      return;
+    }
+
+    const result = await this.appointmentService.deleteAppointment(id);
+    if (result.success) {
+      await this.fetchAppointments();
+    } else {
+      alert(result.error || 'Failed to delete appointment.');
+    }
+  }
+
   formatDateStr(dateStr: string): string {
     const date = new Date(dateStr);
     return date.toLocaleDateString('en-US', {
