@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import apiRouter from './routes';
 import { errorHandler } from './middleware/error.middleware';
+import { dbMiddleware } from './middleware/db.middleware';
 
 const app = express();
 
@@ -36,6 +37,9 @@ app.use(cors({
 
 // Body parser
 app.use(express.json());
+
+// Database connection check
+app.use(dbMiddleware);
 
 // Root status check
 app.get('/', (req, res) => {
