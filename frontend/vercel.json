@@ -1,4 +1,5 @@
 {
+  "outputDirectory": "dist/doctor-appointment-app/browser",
   "rewrites": [
     {
       "source": "/api/:path*",
