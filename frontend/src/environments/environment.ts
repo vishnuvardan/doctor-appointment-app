@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://doctor-appointment-backend-production-d2b0.up.railway.app' // Change this to your production API URL when hosting
+  apiUrl: '' // Empty string triggers relative requests to the current host (resolved via Vercel rewrites)
 };
